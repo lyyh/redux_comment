@@ -1,22 +1,23 @@
-var webpack = require('webpack');
-var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
-var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+ //打包配置
+ var path = require('path')
+ var webpack = require('webpack')
+ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-var path = require('path');
+ var config = {
+    entry: {
+        index: ["./app/entry/index"],
+    },
 
-module.exports = {
-  entry: './app/entry/index',
-  output: {
-    path:path.join(__dirname,'dist'),
-    filename: 'bundle.js',
-    publicPath: '/static'
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-  },
-  module: {
-    loaders:[
-            {
+   output: {
+      path:path.join(__dirname, "dist"),
+      filename: '[name].min.js',
+   },
+   resolve: {
+     extensions: ['', '.js', '.jsx'],
+   },
+   module: {
+      loaders: [
+             {
                 test: /\.css$/, 
                 loader: "style!css", 
             },
@@ -30,7 +31,7 @@ module.exports = {
             },
             {
               test: /\.less$/,
-              loader: 'style!css!less'
+              loader: ExtractTextPlugin.extract("style-loader","css-loader!less-loader")
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -39,10 +40,21 @@ module.exports = {
                     limit: 10000
                 }
             }
-    ]
-  },
-  plugins: [
-    new CommonsChunkPlugin('init.js'),
-    new OpenBrowserPlugin({ url: 'http://localhost:8080' })
-  ]
-};
+      ]
+   },
+
+   plugins: [
+        new ExtractTextPlugin("./style.css"),
+        new webpack.optimize.CommonsChunkPlugin('commons.min.js'),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+            warnings: false
+        }
+     })
+   ]
+}
+
+module.exports = config;

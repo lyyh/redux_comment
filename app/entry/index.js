@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Comment from '../containers/comment/Comment';
-// import Message from '../containers/message/Message';
-import MessageController from '../containers/message/MessageController';
-import './reset.css'; 
-import './index.less';
+import 'babel-polyfill';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
+import App from '../components/app/App'
+import todoApp from '../reducers'
 
+let store = createStore(todoApp)
 
 ReactDOM.render(
-	<section className='wrap'>
-	<MessageController/>
-	<Comment/>
-	</section>,
+	<Provider store={store}>
+		<App/>
+	</Provider>,	
 	document.getElementById('container')
 	)

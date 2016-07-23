@@ -1,6 +1,6 @@
-import React from 'react';
-import ComHeader from '../../components/comment_header/ComHeader';
-import ComContent from '../../components/comment_content/ComContent';
+import React from 'react'
+import ComHeader from '../comment_header/ComHeader'
+import ComContenter from '../../containers/ComContenter'
 
 class Comment extends React.Component {
     constructor(props) {
@@ -11,7 +11,7 @@ class Comment extends React.Component {
         return (
         	<section>
         		<ComHeader/>
-        		<ComContent/>
+        		<ComContenter/>
             </section>
         );
     }

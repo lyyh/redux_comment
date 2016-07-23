@@ -1,22 +1,27 @@
- //打包配置
- var path = require('path')
- var webpack = require('webpack')
+var path = require('path')
+var webpack = require('webpack')
 
- var config = {
-    entry: {
-        index: ["./app/entry/index"],
-    },
-
-   output: {
-      path:path.join(__dirname, "dist"),
-      filename: '[name].min.js',
-   },
-   resolve: {
-     extensions: ['', '.js', '.jsx'],
-   },
-   module: {
-      loaders: [
-             {
+module.exports = {
+  devtool: 'cheap-module-eval-source-map',
+  entry: [
+    'webpack-hot-middleware/client',
+    './app/entry/index'
+  ],
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/static/'
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
+  plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  module: {
+    loaders: [
+        {
                 test: /\.css$/, 
                 loader: "style!css", 
             },
@@ -39,20 +44,7 @@
                     limit: 10000
                 }
             }
-      ]
-   },
-
-   plugins: [
-        new webpack.optimize.CommonsChunkPlugin('commons.min.js'),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-            warnings: false
-        }
-     })
-   ]
+    ]
+  }
 }
 
-module.exports = config;
